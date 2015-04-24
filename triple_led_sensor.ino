@@ -27,13 +27,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 // enable this line to use debug function
-// #define DEBUG
+//#define DEBUG
 
 // These are colors pre-defined
 #define WHITE  { 255, 255, 255}
 #define RED    { 255,   0,   0}
 #define GREEN  {   0, 255,   0}
 #define BLUE   {   0,   0, 255}
+#define PURPLE { 255,   0, 255}
+#define YELLOW { 255, 255,   0}
 
 // This is the pre-defined color sequence
 static const uint8_t colorTable[][3] = {
@@ -41,6 +43,8 @@ static const uint8_t colorTable[][3] = {
   RED,
   GREEN,
   BLUE,
+  PURPLE,
+  YELLOW,
 };
 static const int colorTableSize = sizeof(colorTable) / sizeof(uint8_t) / 3;
 
@@ -111,10 +115,10 @@ void changeColor(int i, bool off) {
   Serial.println(colorTable[currentColor][2]);
 #endif
 
-  // output the color, with GRB channel
-  analogWrite(9 , colorTable[currentColor][1]);
+  // output the color, with BRG channel
+  analogWrite(9 , colorTable[currentColor][2]);
   analogWrite(10, colorTable[currentColor][0]);
-  analogWrite(11, colorTable[currentColor][2]);
+  analogWrite(11, colorTable[currentColor][1]);
 }
 
 // threshold for each infrared sensors
@@ -141,9 +145,9 @@ void setup() {
 
 void loop() {
   // continuouly read the analog pins...
-  int a0 = analogRead(A0);
-  int a1 = analogRead(A1);
-  int a2 = analogRead(A2);
+  int a0 = analogRead(A3);
+  int a1 = analogRead(A4);
+  int a2 = analogRead(A5);
 
 #ifdef DEBUG
   Serial.print("Read: ");
