@@ -24,29 +24,46 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+Change log
+Rev 1.0 18/04/2015: First release
+Rev 1.1 25/04/2015: Added command shell
 */
 
-// enable this line to use debug function
-//#define DEBUG
+#include <string.h>
+#include <EEPROM.h>
+
+// change debug level to 3 to see all debug information
+#define DEBUGLEVEL 0
 
 // These are colors pre-defined
-#define WHITE  { 255, 255, 255}
-#define RED    { 255,   0,   0}
-#define GREEN  {   0, 255,   0}
-#define BLUE   {   0,   0, 255}
-#define PURPLE { 255,   0, 255}
-#define YELLOW { 255, 255,   0}
+#define WHITE  { 0xff, 0xff, 0xff }
+#define RED    { 0xff,    0,    0 }
+#define GREEN  {    0, 0xff,    0 }
+#define BLUE   {    0,    0, 0xff }
+#define MAGENTA{ 0xff,    0, 0xff }
+#define YELLOW { 0xff, 0xff,    0 }
+#define CYAN   {    0, 0xff, 0xff }
+#define BGREEN { 0x66, 0xff,    0 }
+#define CRIMSON{ 0xdc, 0x14, 0x3c }
 
+#define MAX_NUMBER_OF_COLOR 9
 // This is the pre-defined color sequence
-static const uint8_t colorTable[][3] = {
+uint8_t colorTable[MAX_NUMBER_OF_COLOR][3] = {
   WHITE,
   RED,
   GREEN,
   BLUE,
-  PURPLE,
+  MAGENTA,
   YELLOW,
+  CYAN,
+  BGREEN,
+  CRIMSON
 };
-static const int colorTableSize = sizeof(colorTable) / sizeof(uint8_t) / 3;
+
+uint8_t colorTableSize = MAX_NUMBER_OF_COLOR;
+
+#define EEPROM_COLOR_TABLE_SIZE 0x00
+#define EEPROM_COLOR_TABLE      0x10
 
 // This is table of states required
 typedef enum {
@@ -81,12 +98,85 @@ state_t currentState, nextState;
 long int currentTime;
 long int lastTime;
 
+// define a simple command line parsing facility
+#define SHELL_MAX_LINE_LENGTH       64
+#define SHELL_MAX_ARGUMENTS         4
+
+// utility function: equal to strtok
+
+char *_strtok(char *str, const char *delim, char **saveptr) {
+  char *token;
+  if (str)
+    *saveptr = str;
+  token = *saveptr;
+
+  if (!token)
+    return NULL;
+
+  token += strspn(token, delim);
+  *saveptr = strpbrk(token, delim);
+  if (*saveptr)
+    *(*saveptr)++ = '\0';
+
+  return *token ? token : NULL;
+}
+
+// utility function: convert a string to hex number
+int _atoh(char *a) {
+  int tmp = 0;
+  int i = 0;
+
+  while (1) {
+    if ((a[i] >= '0') && (a[i] <= '9')) {
+      tmp = tmp * 16 + (a[i] - '0');
+      i++; continue;
+    } 
+
+    if ((a[i] >= 'A') && (a[i] <= 'F')) {
+      tmp = tmp * 16 + (a[i] - 'A' + 10);
+      i++; continue;
+    }
+
+    if ((a[i] >= 'a') && (a[i] <= 'f')) {
+      tmp = tmp * 16 + (a[i] - 'a' + 10);
+      i++; continue;
+    }
+
+    break;
+  }
+  return tmp;
+}
+
+// utility function: read a line from Serial
+int _readline(int readch, char *buffer, int len)
+{
+  static int pos = 0;
+  int rpos;
+
+  if (readch > 0) {
+    switch (readch) {
+      case '\n': // Ignore new-lines
+        break;
+      case '\r': // Return on CR
+        rpos = pos;
+        pos = 0;  // Reset position index ready for next time
+        return rpos;
+      default:
+        if (pos < len-1) {
+          buffer[pos++] = readch;
+          buffer[pos] = 0;
+        }
+    }
+  }
+  // No end of line has been found, so return -1.
+  return -1;
+}
+
+static int currentColor = 0; 
 // function changeColor
 //   input i: offset of color to change, according to the color table
 //   input bool: turn on or off to the color
 void changeColor(int i, bool off) {
-  static int currentColor = 0;  
-  
   // we want to turn off the light
   if (off == true) {
     // turn off the pwm
@@ -103,7 +193,7 @@ void changeColor(int i, bool off) {
   while (currentColor < 0)
     currentColor += colorTableSize;
   
-#ifdef DEBUG  
+#if DEBUGLEVEL >= 3
   Serial.print("Current state: ");
   Serial.println(currentColor);
   
@@ -121,6 +211,86 @@ void changeColor(int i, bool off) {
   analogWrite(11, colorTable[currentColor][1]);
 }
 
+void cmd_getcolor(int argc, char *argv[]) {
+  if (argc != 0) {
+    Serial.println("Error");
+    return; 
+  }
+  
+  Serial.println(colorTableSize);
+  for (int i = 0; i < colorTableSize; i++) {
+    Serial.print(colorTable[i][0], HEX);
+    Serial.print(" ");
+    Serial.print(colorTable[i][1], HEX);
+    Serial.print(" ");
+    Serial.println(colorTable[i][2], HEX);
+  }
+}
+
+void cmd_setcolor(int argc, char *argv[]) {
+  if (argc != 4) {
+    Serial.println("Error"); 
+  }
+  
+  int n = _atoh(argv[0]) - 1;
+  if (n >= colorTableSize) {
+    Serial.println("Error");
+    return;
+  }
+  
+  colorTable[n][0] = _atoh(argv[1]);
+  colorTable[n][1] = _atoh(argv[2]);
+  colorTable[n][2] = _atoh(argv[3]);
+  changeColor(0, false);
+}
+
+void cmd_ncolor(int argc, char *argv[]) {
+  if (argc != 1) {
+    Serial.println("Error");
+    return; 
+  }
+  
+  // change the number of color
+  int n = _atoh(argv[0]);
+  if (n > 10) {
+    Serial.println("Error");
+    return; 
+  }
+  
+  colorTableSize = n;
+  changeColor(0, false);
+}
+
+
+void cmd_save(int argc, char *argv[]) {
+  if (argc != 0) {
+    Serial.println("Error");
+    return; 
+  }
+  
+  EEPROM.write(EEPROM_COLOR_TABLE_SIZE, colorTableSize);
+  for (int i = 0; i < MAX_NUMBER_OF_COLOR; i++) {
+    EEPROM.write(EEPROM_COLOR_TABLE + i*3 + 0, colorTable[i][0]);
+    EEPROM.write(EEPROM_COLOR_TABLE + i*3 + 1, colorTable[i][1]);
+    EEPROM.write(EEPROM_COLOR_TABLE + i*3 + 2, colorTable[i][2]);
+  }
+}
+
+void cmd_color(int argc, char *argv[]) {
+  if (argc != 3) {
+    Serial.println("Error");
+    return; 
+  }
+  
+  colorTable[currentColor][0] = _atoh(argv[0]);
+  colorTable[currentColor][1] = _atoh(argv[1]);
+  colorTable[currentColor][2] = _atoh(argv[2]);
+  analogWrite(9 , _atoh(argv[2]));
+  analogWrite(10, _atoh(argv[0]));
+  analogWrite(11, _atoh(argv[1]));
+  changeColor(0, false);
+}
+
 // threshold for each infrared sensors
 int threshold0;
 int threshold1;
@@ -128,7 +298,21 @@ int threshold2;
 
 void setup() {
   // begin the serial debug
-  Serial.begin(38400);
+  Serial.begin(9600);
+  
+  // load the table from ROM
+  // check if the EEPROM is virgin
+  int n = EEPROM.read(EEPROM_COLOR_TABLE_SIZE);
+  
+  // the EEPROM was written, therefore we read the old value from it
+  if (n != 0xFF) {
+    colorTableSize = EEPROM.read(EEPROM_COLOR_TABLE_SIZE); 
+    for (int i = 0; i < MAX_NUMBER_OF_COLOR; i++) {
+      colorTable[i][0] = EEPROM.read(EEPROM_COLOR_TABLE + i*3 + 0);
+      colorTable[i][1] = EEPROM.read(EEPROM_COLOR_TABLE + i*3 + 1);
+      colorTable[i][2] = EEPROM.read(EEPROM_COLOR_TABLE + i*3 + 2);
+    }
+  } 
   
   // initialized the state machine
   currentState = STATE_IDLE;
@@ -140,16 +324,67 @@ void setup() {
   threshold2 = 600;
   
   // turn on the lamp
-  changeColor(0, true);
+  changeColor(0, false);
 }
 
 void loop() {
+  static char line[SHELL_MAX_LINE_LENGTH];
+  
+  int n;
+  char *lp, *cmd, *tokp; 
+  char *args[SHELL_MAX_ARGUMENTS + 1];
+  
+  // try to parse the command line
+  if (_readline(Serial.read(), line, SHELL_MAX_LINE_LENGTH) > 0) {
+    lp = _strtok(line, " \t", &tokp);
+    cmd = lp;
+    n = 0;
+    while ((lp = _strtok(NULL, " \t", &tokp)) != NULL) {
+      if (n >= SHELL_MAX_ARGUMENTS) {
+        Serial.println("too many arguments");
+        cmd = NULL;
+        break;
+      }
+      args[n++] = lp;
+    }
+    args[n] = NULL;
+    
+    // comparing command and execute command
+    if (cmd != NULL) {
+      // compare it with a number of predetermined command
+      if (0 == strcasecmp("getcolor", cmd)) {
+         cmd_getcolor(n, args); 
+      } else
+      
+      if (0 == strcasecmp("setcolor", cmd)) {
+         cmd_setcolor(n, args); 
+      } else
+      
+      if (0 == strcasecmp("save", cmd)) {
+         cmd_save(n, args); 
+      } else
+      
+      if (0 == strcasecmp("ncolor", cmd)) {
+         cmd_ncolor(n, args); 
+      } else 
+      
+      if (0 == strcasecmp("color", cmd)) {
+         cmd_color(n, args); 
+      } else 
+      {
+        // invalid command
+        Serial.print(cmd);
+        Serial.println(" ?");
+      }
+    }
+  }
+  
   // continuouly read the analog pins...
   int a0 = analogRead(A3);
   int a1 = analogRead(A4);
   int a2 = analogRead(A5);
 
-#ifdef DEBUG
+#if DEBUGLEVEL >= 3
   Serial.print("Read: ");
   Serial.print(a0);
   Serial.print(", ");
@@ -180,7 +415,7 @@ void loop() {
     //   back to idle is the middle sensor does not detect anything
     //   move to state WAIT2 if the middle sensor detect something
     case STATE_WAIT1:
-      if (a1 > threshold1) {
+      if ((a1 > threshold1) && (a2 < threshold2)) {
         nextState = STATE_WAIT2;
       }
      
@@ -207,7 +442,7 @@ void loop() {
     //   back to idle is the middle sensor does not detect anything
     //   move to state WAIT2 if the middle sensor detect something
     case STATE_WAIT3:
-      if (a1 > threshold1) {
+      if ((a1 > threshold1) && (a0 < threshold0)) {
         nextState = STATE_WAIT4;
       }
      
@@ -231,14 +466,18 @@ void loop() {
 
     // complete motion detected, so we change color
     case STATE_CHNG1:
+#if DEBUGLEVEL >= 1
       Serial.println("Left to Right");
+#endif
       changeColor(1, false);
       nextState = STATE_IDLE; 
       break;
     
     // complete motion detected, so we change color
     case STATE_CHNG2:
+ #ifdef DEBUGLEVEL >= 1
       Serial.println("Right to Left");
+ #endif
       changeColor(-1, false);
       nextState = STATE_IDLE; 
       break;
@@ -289,7 +528,7 @@ void loop() {
   
   // update the state machine
   if (currentState != nextState) { 
-#ifdef DEBUG
+#if DEBUGLEVEL >=1
     Serial.print("State: ");
     Serial.print(currentState);
     Serial.print(", ");
@@ -300,3 +539,4 @@ void loop() {
     lastTime = millis();
   }
 }
+
