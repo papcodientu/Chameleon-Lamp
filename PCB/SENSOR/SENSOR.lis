@@ -1,0 +1,63 @@
+Post Processor Report
+OrCAD FILE: H:\LAM T\P DENCAMUNG\MACHDIEN\SENSOR\SENSOR.MAX
+Tue May 05 02:18:35 2015
+
+*********************************************************
+
+Output file: H:\LAM T\P DENCAMUNG\MACHDIEN\SENSOR\SENSOR.BOT
+
+Aperture totals for H:\LAM T\P DENCAMUNG\MACHDIEN\SENSOR\SENSOR.BOT:
+---------------------------------------------------------
+D15:  0.0100 ROUND  --      17 Draws,       0 Flashes
+D16:  0.0750 SQUARE --       0 Draws,       6 Flashes
+D17:  0.0750 ROUND  --       0 Draws,      18 Flashes
+D18:  0.0750 x 0.0900 OBLONG    -----       4 Flashes
+D19:  0.0750 x 0.0900 RECTANGLE -----       1 Flashes
+D20:  0.0010 ROUND  --   14002 Draws,       0 Flashes
+D21:  0.0250 ROUND  --      55 Draws,       0 Flashes
+---------------------------------------------------------
+  7 D-Codes      -----   14074 Draws,      29 Flashes
+
+*********************************************************
+
+Output file: H:\LAM T\P DENCAMUNG\MACHDIEN\SENSOR\SENSOR.SST
+
+Aperture totals for H:\LAM T\P DENCAMUNG\MACHDIEN\SENSOR\SENSOR.SST:
+---------------------------------------------------------
+D15:  0.0100 ROUND  --      69 Draws,       0 Flashes
+D26:  0.0080 ROUND  --     414 Draws,       0 Flashes
+D27:  0.0079 ROUND  --      78 Draws,       0 Flashes
+D28:  0.0050 ROUND  --       6 Draws,       0 Flashes
+---------------------------------------------------------
+  4 D-Codes      -----     567 Draws,       0 Flashes
+
+*********************************************************
+
+Output file: H:\LAM T\P DENCAMUNG\MACHDIEN\SENSOR\SENSOR.DRD
+
+Aperture totals for H:\LAM T\P DENCAMUNG\MACHDIEN\SENSOR\SENSOR.DRD:
+---------------------------------------------------------
+D15:  0.0100 ROUND  --     358 Draws,       0 Flashes
+---------------------------------------------------------
+  1 D-Codes      -----     358 Draws,       0 Flashes
+
+
+*********************************************************
+
+Aperture totals for entire project:
+---------------------------------------------------------
+D15:  0.0100 ROUND  --     444 Draws,       0 Flashes
+D16:  0.0750 SQUARE --       0 Draws,       6 Flashes
+D17:  0.0750 ROUND  --       0 Draws,      18 Flashes
+D18:  0.0750 x 0.0900 OBLONG    -----       4 Flashes
+D19:  0.0750 x 0.0900 RECTANGLE -----       1 Flashes
+D20:  0.0010 ROUND  --   14002 Draws,       0 Flashes
+D21:  0.0250 ROUND  --      55 Draws,       0 Flashes
+D26:  0.0080 ROUND  --     414 Draws,       0 Flashes
+D27:  0.0079 ROUND  --      78 Draws,       0 Flashes
+D28:  0.0050 ROUND  --       6 Draws,       0 Flashes
+---------------------------------------------------------
+ 10 D-Codes      -----   14999 Draws,      29 Flashes
+
+
+No warnings or errors.

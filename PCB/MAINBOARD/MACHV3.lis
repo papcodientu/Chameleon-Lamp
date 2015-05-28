@@ -1,0 +1,110 @@
+Post Processor Report
+OrCAD FILE: H:\LAM T\P DENCAMUNG\MACHDIEN\LAMP\MACHV3.MAX
+Tue May 05 02:19:04 2015
+
+*********************************************************
+
+Output file: H:\LAM T\P DENCAMUNG\MACHDIEN\LAMP\MACHV3.BOT
+
+Aperture totals for H:\LAM T\P DENCAMUNG\MACHDIEN\LAMP\MACHV3.BOT:
+---------------------------------------------------------
+D10:  0.0740 ROUND  --       0 Draws,       3 Flashes
+D11:  0.0740 SQUARE --       0 Draws,       3 Flashes
+D12:  0.0750 ROUND  --       0 Draws,      28 Flashes
+D13:  0.0750 SQUARE --       0 Draws,       2 Flashes
+D14:  0.0850 x 0.0750 OBLONG    -----       7 Flashes
+D15:  0.0900 x 0.0750 RECTANGLE -----       2 Flashes
+D16:  0.0850 x 0.0720 OBLONG    -----      31 Flashes
+D17:  0.0900 x 0.0720 RECTANGLE -----       2 Flashes
+D18:  0.0900 x 0.0750 OBLONG    -----       3 Flashes
+D19:  0.0900 x 0.0740 OBLONG    -----       9 Flashes
+D20:  0.0740 x 0.0900 OBLONG    -----       2 Flashes
+D21:  0.0740 x 0.0900 RECTANGLE -----       1 Flashes
+D22:  0.0900 x 0.0740 RECTANGLE -----       2 Flashes
+D23:  0.1000 x 0.1600 RECTANGLE -----       1 Flashes
+D24:  0.1600 SQUARE --       0 Draws,       2 Flashes
+D25:  0.0720 x 0.0850 RECTANGLE -----       1 Flashes
+D26:  0.2200 x 0.2800 RECTANGLE -----       1 Flashes
+D27:  0.0720 x 0.0900 RECTANGLE -----       2 Flashes
+D28:  0.0010 ROUND  --   24291 Draws,       0 Flashes
+D29:  0.0100 ROUND  --      52 Draws,       0 Flashes
+D30:  0.0250 ROUND  --     167 Draws,       0 Flashes
+D31:  0.0400 ROUND  --       6 Draws,       0 Flashes
+D32:  0.0300 ROUND  --      37 Draws,       0 Flashes
+D33:  0.0750 ROUND  --       0 Draws,       2 Flashes
+D34:  0.0200 ROUND  --      67 Draws,       0 Flashes
+---------------------------------------------------------
+ 25 D-Codes      -----   24620 Draws,     104 Flashes
+
+*********************************************************
+
+Output file: H:\LAM T\P DENCAMUNG\MACHDIEN\LAMP\MACHV3.SST
+
+Aperture totals for H:\LAM T\P DENCAMUNG\MACHDIEN\LAMP\MACHV3.SST:
+---------------------------------------------------------
+D28:  0.0010 ROUND  --       4 Draws,       0 Flashes
+D29:  0.0100 ROUND  --     141 Draws,       0 Flashes
+D35:  0.0080 ROUND  --     828 Draws,       0 Flashes
+D36:  0.0079 ROUND  --      65 Draws,       0 Flashes
+D37:  0.0070 ROUND  --      17 Draws,       0 Flashes
+D38:  0.0040 ROUND  --      74 Draws,       0 Flashes
+D39:  0.0050 ROUND  --      18 Draws,       0 Flashes
+D40:  0.0120 ROUND  --       6 Draws,       0 Flashes
+D41:  0.0150 ROUND  --       2 Draws,       0 Flashes
+D42:  0.0118 ROUND  --       8 Draws,       0 Flashes
+---------------------------------------------------------
+ 10 D-Codes      -----    1163 Draws,       0 Flashes
+
+*********************************************************
+
+Output file: H:\LAM T\P DENCAMUNG\MACHDIEN\LAMP\MACHV3.DRD
+
+Aperture totals for H:\LAM T\P DENCAMUNG\MACHDIEN\LAMP\MACHV3.DRD:
+---------------------------------------------------------
+D29:  0.0100 ROUND  --     718 Draws,       0 Flashes
+---------------------------------------------------------
+  1 D-Codes      -----     718 Draws,       0 Flashes
+
+
+*********************************************************
+
+Aperture totals for entire project:
+---------------------------------------------------------
+D10:  0.0740 ROUND  --       0 Draws,       3 Flashes
+D11:  0.0740 SQUARE --       0 Draws,       3 Flashes
+D12:  0.0750 ROUND  --       0 Draws,      28 Flashes
+D13:  0.0750 SQUARE --       0 Draws,       2 Flashes
+D14:  0.0850 x 0.0750 OBLONG    -----       7 Flashes
+D15:  0.0900 x 0.0750 RECTANGLE -----       2 Flashes
+D16:  0.0850 x 0.0720 OBLONG    -----      31 Flashes
+D17:  0.0900 x 0.0720 RECTANGLE -----       2 Flashes
+D18:  0.0900 x 0.0750 OBLONG    -----       3 Flashes
+D19:  0.0900 x 0.0740 OBLONG    -----       9 Flashes
+D20:  0.0740 x 0.0900 OBLONG    -----       2 Flashes
+D21:  0.0740 x 0.0900 RECTANGLE -----       1 Flashes
+D22:  0.0900 x 0.0740 RECTANGLE -----       2 Flashes
+D23:  0.1000 x 0.1600 RECTANGLE -----       1 Flashes
+D24:  0.1600 SQUARE --       0 Draws,       2 Flashes
+D25:  0.0720 x 0.0850 RECTANGLE -----       1 Flashes
+D26:  0.2200 x 0.2800 RECTANGLE -----       1 Flashes
+D27:  0.0720 x 0.0900 RECTANGLE -----       2 Flashes
+D28:  0.0010 ROUND  --   24295 Draws,       0 Flashes
+D29:  0.0100 ROUND  --     911 Draws,       0 Flashes
+D30:  0.0250 ROUND  --     167 Draws,       0 Flashes
+D31:  0.0400 ROUND  --       6 Draws,       0 Flashes
+D32:  0.0300 ROUND  --      37 Draws,       0 Flashes
+D33:  0.0750 ROUND  --       0 Draws,       2 Flashes
+D34:  0.0200 ROUND  --      67 Draws,       0 Flashes
+D35:  0.0080 ROUND  --     828 Draws,       0 Flashes
+D36:  0.0079 ROUND  --      65 Draws,       0 Flashes
+D37:  0.0070 ROUND  --      17 Draws,       0 Flashes
+D38:  0.0040 ROUND  --      74 Draws,       0 Flashes
+D39:  0.0050 ROUND  --      18 Draws,       0 Flashes
+D40:  0.0120 ROUND  --       6 Draws,       0 Flashes
+D41:  0.0150 ROUND  --       2 Draws,       0 Flashes
+D42:  0.0118 ROUND  --       8 Draws,       0 Flashes
+---------------------------------------------------------
+ 33 D-Codes      -----   26501 Draws,     104 Flashes
+
+
+No warnings or errors.
