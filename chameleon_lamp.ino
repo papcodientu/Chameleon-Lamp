@@ -380,9 +380,9 @@ void loop() {
   }
   
   // continuouly read the analog pins...
-  int a0 = analogRead(A3);
-  int a1 = analogRead(A4);
-  int a2 = analogRead(A5);
+  int a0 = 1024 - analogRead(A3);
+  int a1 =  1024 - analogRead(A4);
+  int a2 = 1024 - analogRead(A5);
 
 #if DEBUGLEVEL >= 3
   Serial.print("Read: ");
